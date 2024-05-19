@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership Page</title>
+</head>
+<body>
+    <h1>Member List</h1>
+    <div id="member-list"></div>
+
+    <script>
+        async function fetchData() {
+            const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vRXCCk4xWas2UNgO4KrTiaXtimrj-TbOyIRLV0XIDzQIi_AT92njCnUp0xCtzwW2-5lwzc1HjBU-beI/pub?output=csv');
+            const data = await response.text();
+            const rows = data.split('\n').slice(1); // Skip header row
+
+            const memberList = document.getElementById('member-list');
+            rows.forEach(row => {
+                const columns = row.split(',');
+                const memberDiv = document.createElement('div');
+                memberDiv.textContent = `Name: ${columns[0]}, Email: ${columns[1]}, Status: ${columns[2]}`;
+                memberList.appendChild(memberDiv);
+            });
+        }
+
+        fetchData();
+    </script>
+</body>
+</html>
