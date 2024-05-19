@@ -4,10 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Membership Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 18px;
+            text-align: left;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
     <h1>Member List</h1>
-    <div id="member-list"></div>
+    <table id="member-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 
     <script>
         async function fetchData() {
@@ -15,12 +48,18 @@
             const data = await response.text();
             const rows = data.split('\n').slice(1); // Skip header row
 
-            const memberList = document.getElementById('member-list');
+            const tableBody = document.querySelector('#member-table tbody');
             rows.forEach(row => {
                 const columns = row.split(',');
-                const memberDiv = document.createElement('div');
-                memberDiv.textContent = `Name: ${columns[0]}, Email: ${columns[1]}, Status: ${columns[2]}`;
-                memberList.appendChild(memberDiv);
+                if(columns.length >= 3) {
+                    const tr = document.createElement('tr');
+                    columns.forEach(column => {
+                        const td = document.createElement('td');
+                        td.textContent = column.trim();
+                        tr.appendChild(td);
+                    });
+                    tableBody.appendChild(tr);
+                }
             });
         }
 
